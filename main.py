@@ -66,9 +66,27 @@ def save():
         website_entry.delete(0, END)
         password_entry.delete(0, END)
 
-def search():
-    pass
 
+def find_password():
+    website = website_entry.get()
+    print(website)
+
+    try:
+        with open("data.json", "r") as data_file:
+            # Reading old data
+            data = json.load(data_file)
+    except FileNotFoundError:
+        messagebox.askokcancel(title="File not found", message="No Data File Found")
+    else:
+        keyslist = list(data.keys())
+        if website.lower() in (name.lower() for name in keyslist):
+            print("found")
+            email = "WAA"
+            password = "WOO"
+            messagebox.askokcancel(title=website, message=f"Email: {email} "
+                                                              f"\nPassword: {password}\n"
+                                                          f"(copied to clipboard)")
+            pyperclip.copy(password)
 
 # ---------------------------- UI SETUP ------------------------------- #
 
@@ -104,9 +122,8 @@ generate_password_button = Button(text="Generate Password", width=20, command=ge
 generate_password_button.grid(row=3, column=2)
 add_button = Button(text="Add", width=60, command=save)
 add_button.grid(row=4, column=1, columnspan=2)
-add_button = Button(text="Search", width=20, command=search)
+add_button = Button(text="Search", width=20, command=find_password)
 add_button.grid(row=1, column=2)
-
 
 
 window.mainloop()
